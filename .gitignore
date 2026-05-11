@@ -1,0 +1,14 @@
+# Rust build artifacts
+tools/verse-search/target/
+
+# macOS
+.DS_Store
+
+# Editor / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log

@@ -1,0 +1,17 @@
+{
+  "agent_cli": "claude",
+  "agent_language": "",
+  "agent_model_claude": "",
+  "agent_model_codex": "",
+  "agent_model_gemini": "",
+  "agent_model_opencode": "",
+  "agent_opencode_context_length": null,
+  "agent_permission_mode": "auto",
+  "append_prompt": "",
+  "append_prompt_skill": "",
+  "column_prompts": {},
+  "initial_prompt": "",
+  "initial_prompt_skill": "",
+  "system_prompt_before_delete": "",
+  "system_prompt_before_delete_skill": ""
+}

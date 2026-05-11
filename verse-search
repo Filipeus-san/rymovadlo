@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# Wrapper for the verse-search binary (Rust).
+# On first run (or after sources change), builds release binary, then execs it.
+# The corpus path defaults to ./ccv (resolved relative to this script).
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$SCRIPT_DIR/tools/verse-search"
+BIN="$PROJECT_DIR/target/release/verse-search"
+CORPUS="$SCRIPT_DIR/ccv"
+
+needs_build=0
+if [ ! -x "$BIN" ]; then
+    needs_build=1
+else
+    # Rebuild if any source is newer than the binary.
+    while IFS= read -r src; do
+        if [ "$src" -nt "$BIN" ]; then
+            needs_build=1
+            break
+        fi
+    done < <(find "$PROJECT_DIR/src" "$PROJECT_DIR/Cargo.toml" -type f)
+fi
+
+if [ "$needs_build" -eq 1 ]; then
+    echo "verse-search: building release binary..." >&2
+    (cd "$PROJECT_DIR" && cargo build --release --quiet)
+fi
+
+# If user did not pass --corpus, inject our default.
+has_corpus=0
+for arg in "$@"; do
+    case "$arg" in
+        --corpus|--corpus=*) has_corpus=1; break;;
+    esac
+done
+
+if [ "$has_corpus" -eq 1 ]; then
+    exec "$BIN" "$@"
+else
+    exec "$BIN" --corpus "$CORPUS" "$@"
+fi
