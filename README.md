@@ -8,7 +8,7 @@ Skládá se ze tří vrstev:
 2. **`verse-search`** — Rust CLI (binárka v rootu) pro rychlé vyhledávání v korpusu. Má dva subkomandy:
    - `search <pattern>` — hledá verše podle textu, regexu nebo lemmatu (s filtry na autora/rok/metrum).
    - `rhymes <slovo>` — vrátí slova, se kterými básníci v korpusu rýmovali zadané slovo, seřazená podle frekvence.
-3. **`.claude/skills/prebasni/`** — Claude Code skill `/prebasni`, který vezme nerýmovaný text, rozdělí ho na sloky a verše a přepíše konce veršů tak, aby se rýmovaly. Pro každou rýmovou skupinu si zavolá `verse-search rhymes` a vybere kandidáta z korpusu.
+3. **Skill `/prebasni`** — vezme nerýmovaný text, rozdělí ho na sloky a verše a přepíše konce veršů tak, aby se rýmovaly. Pro každou rýmovou skupinu si zavolá `verse-search rhymes` a vybere kandidáta z korpusu. Definice skillu je v `.claude/skills/prebasni/SKILL.md` a je dostupná z **Claude Code**, **OpenAI Codex CLI** i **Gemini CLI** (viz [Použití skillu](#použití-skillu-prebasni)).
 
 ## Instalace
 
@@ -46,13 +46,19 @@ Ověření, že to běží:
 
 Mělo by vypsat JSON se slovy, kterými básníci rýmovali „noc".
 
-## Použití skillu `/prebasni` v Claude Code
+## Použití skillu `/prebasni`
 
-Skill je registrovaný v `.claude/skills/prebasni/SKILL.md` a Claude Code ho automaticky načte, když otevřete tento projekt jako pracovní adresář.
+Skill je definovaný v `.claude/skills/prebasni/SKILL.md` a registrovaný pro tři CLI agenty (zdroj pravdy je vždy `SKILL.md`, ostatní jsou jen tenké wrappery):
+
+| Agent | Soubor | Poznámka |
+|---|---|---|
+| **Claude Code** | `.claude/skills/prebasni/SKILL.md` | Načítá se automaticky z working dir. |
+| **OpenAI Codex CLI** | `.agents/skills/prebasni/` | Symlink na složku `.claude/skills/prebasni/`. |
+| **Gemini CLI** | `.gemini/commands/prebasni.toml` | TOML wrapper, který přes `@{...}` embeduje SKILL.md. |
 
 ### Spuštění
 
-V Claude Code napište:
+V terminálu otevřete kteréhokoli agenta s tímto projektem jako pracovním adresářem a napište:
 
 ```
 /prebasni Ráno bylo mlhavé. Šel jsem podél řeky a viděl, jak se voda valí pomalu. Stromy byly mokré od rosy a ptáci ještě nezpívali.
@@ -101,7 +107,13 @@ rymovadlo/
 ├── verse-search                  # Zkompilovaná binárka (volaná skillem)
 ├── .claude/
 │   ├── settings.json             # Povolení pro Claude Code
-│   └── skills/prebasni/SKILL.md  # Definice skillu /prebasni
+│   └── skills/prebasni/SKILL.md  # Definice skillu /prebasni — zdroj pravdy
+├── .agents/
+│   └── skills/prebasni → ../../.claude/skills/prebasni  # symlink pro Codex CLI
+├── .gemini/
+│   └── commands/prebasni.toml    # Wrapper pro Gemini CLI (embeduje SKILL.md)
+├── CLAUDE.md                     # Pokyny pro AI agenty (Claude)
+├── AGENTS.md                     # → CLAUDE.md (symlink, pro Codex/Cursor/…)
 └── README.md
 ```
 

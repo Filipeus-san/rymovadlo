@@ -1,0 +1,11 @@
+description = "Přebásní český text do rýmovaných slok. Rýmy bere z Korpusu českého verše přes ./verse-search rhymes."
+
+prompt = """
+Postupuj přesně podle instrukcí v následujícím skill souboru:
+
+@{.claude/skills/prebasni/SKILL.md}
+
+Argumenty uživatele (volitelné přepínače + text k přebásnění):
+
+{{args}}
+"""
