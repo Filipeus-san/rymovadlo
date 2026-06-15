@@ -1,0 +1,22 @@
+[package]
+name = "verse-search-sql"
+version = "0.1.0"
+edition = "2021"
+description = "REST API over PostgreSQL dump of the Corpus of Czech Verse."
+publish = false
+
+[dependencies]
+anyhow = "1"
+axum = "0.7"
+clap = { version = "4", features = ["derive", "env"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sqlx = { version = "0.8", default-features = false, features = ["runtime-tokio-rustls", "postgres", "macros"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "signal"] }
+tower-http = { version = "0.5", features = ["trace", "cors"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[profile.release]
+opt-level = 3
+lto = "thin"

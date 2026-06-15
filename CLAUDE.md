@@ -13,6 +13,10 @@ Detailní popis projektu, instalace a uživatelské použití viz [README.md](./
    - **OpenAI Codex CLI** — `.agents/skills/prebasni` (symlink na složku v `.claude/skills/`, stejný formát SKILL.md).
    - **Gemini CLI** — `.gemini/commands/prebasni.toml` (TOML wrapper, embeduje obsah SKILL.md přes `@{...}` syntax).
 
+### Alternativní SQL backend (`tools/verse-search-sql/`)
+
+Rust REST API server nad PostgreSQL dumpem korpusu (`tools/ccv-to-sql/` generuje schema + per-table data SQL). Endpointy `/health`, `/search`, `/rhymes` (parametry zhruba sedí s CLI `verse-search`). DB připojení přes `--database-url` flag nebo `PGHOST/PGUSER/PGPASSWORD/PGDATABASE/PGPORT` env vars. Před prvním spuštěním nahrát `tools/verse-search-sql/perf_indexes.sql` (pg_trgm GIN nad `verses.text`, materializovaný `verse_last_word` pro rhymes). Build: `cd tools/verse-search-sql && cargo run --release -- --database-url postgres://…`. Skill `/prebasni` zatím **nepřepojen** — pořád volá `./verse-search` (JSON scan).
+
 ## Klíčové příkazy
 
 ```bash

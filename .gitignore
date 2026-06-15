@@ -1,5 +1,10 @@
 # Rust build artifacts
 tools/verse-search/target/
+tools/verse-search-sql/target/
+
+# Generated SQL dump of CCV corpus (regenerable via tools/ccv-to-sql/build.py)
+tools/ccv-to-sql/out/
+out/
 
 # macOS
 .DS_Store

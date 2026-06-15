@@ -1,6 +1,5 @@
 ---
-name: prebasni
-description: Vezme delší nerýmovaný text uživatele, rozdělí ho na sloky a verše a přepíše konce veršů tak, aby se rýmovaly. Rýmy vybírá z Korpusu českého verše přes nástroj ./verse-search rhymes. Použij když uživatel volá /prebasni <text> nebo žádá z prózy/poznámek/odstavce udělat rýmovanou báseň. Volitelné argumenty (před textem): --scheme aabb|abab|abba|aaaa (default aabb), --lines-per-stanza N (default 4), --keep-stanzas (zachovat počet slok ze vstupu, default true).
+name: Přebásni
 ---
 
 # Přebásnit text — rozdělit na sloky/verše a zarýmovat
